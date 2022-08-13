@@ -1,6 +1,13 @@
 import React from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from "react-beautiful-dnd";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { TodoState } from "./atom";
 
 const Wrapper = styled.div`
   display: flex;
@@ -34,8 +41,18 @@ const Card = styled.div`
 `;
 
 function App() {
-  const onDragEnd = () => {};
-  const todo = ["a", "b", "c", "d", "e", "f"];
+  const [todo, setTodo] = useRecoilState(TodoState);
+  const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
+    console.log(todo);
+    if (!destination) return;
+    setTodo((prev) => {
+      const copied = [...prev];
+      const cut = copied.splice(source.index, 1);
+      console.log(copied);
+      copied.splice(destination?.index, 0, ...cut);
+      return copied;
+    });
+  };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -45,7 +62,7 @@ function App() {
             {(provided) => (
               <Board ref={provided.innerRef} {...provided.droppableProps}>
                 {todo.map((item, idx) => (
-                  <Draggable draggableId={item} index={idx}>
+                  <Draggable draggableId={item} index={idx} key={item}>
                     {(provided) => (
                       <Card
                         ref={provided.innerRef}

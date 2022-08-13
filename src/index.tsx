@@ -3,6 +3,7 @@ import { createGlobalStyle, ThemeProvider } from "styled-components";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { defaultTheme } from "./theme";
+import { RecoilRoot } from "recoil";
 
 const GrobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -60,9 +61,11 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   // <React.StrictMode>
-  <ThemeProvider theme={defaultTheme}>
-    <GrobalStyle />
-    <App />
-  </ThemeProvider>
+  <RecoilRoot>
+    <ThemeProvider theme={defaultTheme}>
+      <GrobalStyle />
+      <App />
+    </ThemeProvider>
+  </RecoilRoot>
   // </React.StrictMode>
 );
