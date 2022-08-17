@@ -7,8 +7,9 @@ import {
 } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { TodoState } from "./atom";
+import { ITodoState, TodoState } from "./atom";
 import DraggableCard from "./components/DraggableCard";
+import DroppableBoard from "./components/DroppableBoard";
 
 const Wrapper = styled.div`
   display: flex;
@@ -24,42 +25,34 @@ const Boards = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   width: 100%;
-`;
-
-const Board = styled.div`
-  background-color: ${(props) => props.theme.boardColor};
-  padding: 20px 10px;
-  padding-top: 30px;
-  border-radius: 5px;
-  min-height: 200px;
+  gap: 10px;
 `;
 
 function App() {
   const [todo, setTodo] = useRecoilState(TodoState);
   const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
-    if (!destination) return;
-    setTodo((prev) => {
-      const copied = [...prev];
-      const cut = copied.splice(source.index, 1);
-      copied.splice(destination?.index, 0, ...cut);
-      return copied;
-    });
+    if (!destination) {
+      return;
+    } else {
+      setTodo((prev) => {
+        const copiedObj: ITodoState = {};
+        Object.keys(prev).map((item) => {
+          copiedObj[item] = [...prev[item]];
+        });
+        const arr = copiedObj[source.droppableId].splice(source.index, 1);
+        copiedObj[destination.droppableId].splice(destination.index, 0, ...arr);
+        return copiedObj;
+      });
+    }
   };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
         <Boards>
-          <Droppable droppableId="one">
-            {(provided) => (
-              <Board ref={provided.innerRef} {...provided.droppableProps}>
-                {todo.map((item, idx) => (
-                  <DraggableCard item={item} idx={idx} key={item} />
-                ))}
-                {provided.placeholder}
-              </Board>
-            )}
-          </Droppable>
+          {Object.keys(todo).map((item) => (
+            <DroppableBoard todo={todo[item]} boardId={item} key={item} />
+          ))}
         </Boards>
       </Wrapper>
     </DragDropContext>
