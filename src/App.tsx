@@ -13,7 +13,7 @@ import DroppableBoard from "./components/DroppableBoard";
 
 const Wrapper = styled.div`
   display: flex;
-  max-width: 480px;
+  max-width: 700px;
   width: 100%;
   margin: 0 auto;
   justify-content: center;
@@ -22,8 +22,9 @@ const Wrapper = styled.div`
 `;
 
 const Boards = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   width: 100%;
   gap: 10px;
 `;
