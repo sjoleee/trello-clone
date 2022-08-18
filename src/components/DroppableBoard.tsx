@@ -1,6 +1,10 @@
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import DraggableCard from "./DraggableCard";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { useRecoilState } from "recoil";
+import { TodoState } from "../atom";
 
 const Wrapper = styled.div`
   background-color: ${(props) => props.theme.boardColor};
@@ -38,9 +42,28 @@ interface IBoardProps {
 }
 
 function DroppableBoard({ todo, boardId }: IBoardProps) {
+  const [todoState, setTodoState] = useRecoilState(TodoState);
+  const [todoText, setTodoText] = useState("");
+  const { register, watch, handleSubmit, setValue } = useForm();
+  const onValid = (data: any) => {
+    setTodoState((prev) => {
+      const pushedBoard = [...prev[boardId]];
+      pushedBoard.push(data[boardId]);
+      console.log(pushedBoard);
+      return { ...prev, [boardId]: pushedBoard };
+    });
+    setValue(boardId, "");
+  };
   return (
     <Wrapper>
       <Title>{boardId}</Title>
+      <form onSubmit={handleSubmit(onValid)}>
+        <input
+          {...register(boardId, { required: true })}
+          placeholder="입력해주세요"
+        />
+        <button>등록</button>
+      </form>
       <Droppable droppableId={boardId}>
         {(provided, snapshot) => (
           <Area
