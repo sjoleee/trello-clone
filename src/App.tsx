@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import {
   DragDropContext,
   Draggable,
@@ -10,12 +11,20 @@ import styled from "styled-components";
 import { ITodoState, TodoState } from "./atom";
 import DraggableCard from "./components/DraggableCard";
 import DroppableBoard from "./components/DroppableBoard";
+import TrashCan from "./components/TrashCan";
+
+const Title = styled.h1`
+  font-size: 50px;
+  white-space: pre-wrap;
+  text-align: center;
+`;
 
 const Wrapper = styled.div`
   display: flex;
   max-width: 700px;
   width: 100%;
   margin: 0 auto;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -28,6 +37,9 @@ const Boards = styled.div`
   width: 100%;
   gap: 10px;
 `;
+
+const Form = styled.form``;
+const Input = styled.input``;
 
 function App() {
   const [todo, setTodo] = useRecoilState(TodoState);
@@ -57,6 +69,12 @@ function App() {
         copiedBoard.splice(destination.index, 0, ...tmp);
         return { ...prev, [source.droppableId]: copiedBoard };
       });
+    } else if (destination.droppableId === "TrashCan") {
+      setTodo((prev) => {
+        const sourceBoard = [...prev[source.droppableId]];
+        sourceBoard.splice(source.index, 1);
+        return { ...prev, [source.droppableId]: sourceBoard };
+      });
     } else if (destination.droppableId !== source.droppableId) {
       setTodo((prev) => {
         const sourceBoard = [...prev[source.droppableId]];
@@ -75,11 +93,16 @@ function App() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
+        <Title>🧑🏻‍💻{"\n"}asdfaf</Title>
+        <Form>
+          <Input />
+        </Form>
         <Boards>
           {Object.keys(todo).map((item) => (
             <DroppableBoard todo={todo[item]} boardId={item} key={item} />
           ))}
         </Boards>
+        <TrashCan />
       </Wrapper>
     </DragDropContext>
   );
