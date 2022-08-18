@@ -2,7 +2,6 @@ import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import DraggableCard from "./DraggableCard";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { ITodo, TodoState } from "../atom";
 
@@ -14,6 +13,9 @@ const Wrapper = styled.div`
   width: 200px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0px 1px 1px 1px #55555545;
+  &:last-child {
+  }
 `;
 
 const Title = styled.span`
@@ -46,6 +48,7 @@ const Form = styled.form`
 `;
 
 const Input = styled.input`
+  background-color: #f0f0f0;
   opacity: 0.4;
   border: none;
   width: 100%;
