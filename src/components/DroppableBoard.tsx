@@ -4,7 +4,7 @@ import DraggableCard from "./DraggableCard";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { TodoState } from "../atom";
+import { ITodo, TodoState } from "../atom";
 
 const Wrapper = styled.div`
   background-color: ${(props) => props.theme.boardColor};
@@ -36,19 +36,36 @@ const Area = styled.div<IArea>`
   transition: background-color 0.1s ease-in-out;
 `;
 
+const Form = styled.form`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0 10px;
+`;
+
+const Input = styled.input`
+  border: none;
+  width: 100%;
+  height: 25px;
+  border-radius: 5px;
+  padding: 0 15px;
+  &:focus {
+    outline: none;
+  }
+`;
+
 interface IBoardProps {
-  todo: string[];
+  todo: ITodo[];
   boardId: string;
 }
 
 function DroppableBoard({ todo, boardId }: IBoardProps) {
   const [todoState, setTodoState] = useRecoilState(TodoState);
-  const [todoText, setTodoText] = useState("");
-  const { register, watch, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const onValid = (data: any) => {
     setTodoState((prev) => {
       const pushedBoard = [...prev[boardId]];
-      pushedBoard.push(data[boardId]);
+      pushedBoard.push({ text: data[boardId], id: Date.now() });
       console.log(pushedBoard);
       return { ...prev, [boardId]: pushedBoard };
     });
@@ -57,13 +74,9 @@ function DroppableBoard({ todo, boardId }: IBoardProps) {
   return (
     <Wrapper>
       <Title>{boardId}</Title>
-      <form onSubmit={handleSubmit(onValid)}>
-        <input
-          {...register(boardId, { required: true })}
-          placeholder="입력해주세요"
-        />
-        <button>등록</button>
-      </form>
+      <Form onSubmit={handleSubmit(onValid)}>
+        <Input {...register(boardId, { required: true })} />
+      </Form>
       <Droppable droppableId={boardId}>
         {(provided, snapshot) => (
           <Area
@@ -73,7 +86,12 @@ function DroppableBoard({ todo, boardId }: IBoardProps) {
             {...provided.droppableProps}
           >
             {todo.map((item, idx) => (
-              <DraggableCard item={item} idx={idx} key={item} />
+              <DraggableCard
+                text={item.text}
+                id={item.id}
+                idx={idx}
+                key={item.id}
+              />
             ))}
             {provided.placeholder}
           </Area>
