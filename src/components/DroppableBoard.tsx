@@ -29,11 +29,12 @@ interface IArea {
 }
 
 const Area = styled.div<IArea>`
-  padding: 20px 10px;
+  padding: 10px 10px;
   background-color: ${(props) =>
     props.isDraggingOver ? "#a4b0be" : props.theme.boardColor};
   flex-grow: 1;
   transition: background-color 0.1s ease-in-out;
+  border-radius: 0 0 5px 5px;
 `;
 
 const Form = styled.form`
@@ -41,9 +42,11 @@ const Form = styled.form`
   justify-content: center;
   width: 100%;
   padding: 0 10px;
+  margin-bottom: 10px;
 `;
 
 const Input = styled.input`
+  opacity: 0.4;
   border: none;
   width: 100%;
   height: 25px;
@@ -51,6 +54,10 @@ const Input = styled.input`
   padding: 0 15px;
   &:focus {
     outline: none;
+    opacity: 1;
+    ::placeholder {
+      opacity: 0;
+    }
   }
 `;
 
@@ -80,7 +87,7 @@ function DroppableBoard({ todo, boardId }: IBoardProps) {
     <Wrapper>
       <Title>{boardId}</Title>
       <Form onSubmit={handleSubmit(onValid)}>
-        <Input {...register("todoText", { required: true })} />
+        <Input {...register("todoText", { required: true })} placeholder="✏️" />
       </Form>
       <Droppable droppableId={boardId}>
         {(provided, snapshot) => (
