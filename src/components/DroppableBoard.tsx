@@ -59,23 +59,28 @@ interface IBoardProps {
   boardId: string;
 }
 
+interface IForm {
+  todoText: string;
+}
+
 function DroppableBoard({ todo, boardId }: IBoardProps) {
   const [todoState, setTodoState] = useRecoilState(TodoState);
-  const { register, handleSubmit, setValue } = useForm();
-  const onValid = (data: any) => {
+  const { register, watch, handleSubmit, setValue } = useForm<IForm>();
+  const onValid = (data: IForm) => {
+    const newTodo = {
+      id: Date.now(),
+      text: data.todoText,
+    };
     setTodoState((prev) => {
-      const pushedBoard = [...prev[boardId]];
-      pushedBoard.push({ text: data[boardId], id: Date.now() });
-      console.log(pushedBoard);
-      return { ...prev, [boardId]: pushedBoard };
+      return { ...prev, [boardId]: [...prev[boardId], newTodo] };
     });
-    setValue(boardId, "");
+    setValue("todoText", "");
   };
   return (
     <Wrapper>
       <Title>{boardId}</Title>
       <Form onSubmit={handleSubmit(onValid)}>
-        <Input {...register(boardId, { required: true })} />
+        <Input {...register("todoText", { required: true })} />
       </Form>
       <Droppable droppableId={boardId}>
         {(provided, snapshot) => (
