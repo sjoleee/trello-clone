@@ -1,15 +1,9 @@
 import React from "react";
-import { useState } from "react";
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { ITodoState, TodoState } from "./atom";
-import DraggableCard from "./components/DraggableCard";
+import { TodoState } from "./atom";
+import CreateBoardForm from "./components/CreateBoardForm";
 import DroppableBoard from "./components/DroppableBoard";
 import TrashCan from "./components/TrashCan";
 
@@ -17,12 +11,13 @@ const Title = styled.h1`
   font-size: 50px;
   white-space: pre-wrap;
   text-align: center;
+  margin-bottom: 20px;
 `;
 
 const Wrapper = styled.div`
   display: flex;
-  max-width: 700px;
-  width: 100%;
+  /* max-width: 700px; */
+  /* width: 100%; */
   margin: 0 auto;
   flex-direction: column;
   justify-content: center;
@@ -33,16 +28,14 @@ const Wrapper = styled.div`
 const Boards = styled.div`
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  /* align-items: flex-start; */
   width: 100%;
   gap: 10px;
 `;
 
-const Form = styled.form``;
-const Input = styled.input``;
-
 function App() {
   const [todo, setTodo] = useRecoilState(TodoState);
+  console.log(todo);
   const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
     //기존 로직 : 전체 obj를 다 복사한 후 수정하여 set함수로 대체함.
     // if (!destination) {
@@ -64,27 +57,45 @@ function App() {
       return;
     } else if (destination.droppableId === source.droppableId) {
       setTodo((prev) => {
-        const copiedBoard = [...prev[source.droppableId]];
+        const copiedBoard = [...prev[source.droppableId].todos];
         const tmp = copiedBoard.splice(source.index, 1);
         copiedBoard.splice(destination.index, 0, ...tmp);
-        return { ...prev, [source.droppableId]: copiedBoard };
+        return {
+          ...prev,
+          [source.droppableId]: {
+            name: prev[source.droppableId].name,
+            todos: copiedBoard,
+          },
+        };
       });
     } else if (destination.droppableId === "TrashCan") {
       setTodo((prev) => {
-        const sourceBoard = [...prev[source.droppableId]];
+        const sourceBoard = [...prev[source.droppableId].todos];
         sourceBoard.splice(source.index, 1);
-        return { ...prev, [source.droppableId]: sourceBoard };
+        return {
+          ...prev,
+          [source.droppableId]: {
+            name: prev[source.droppableId].name,
+            todos: sourceBoard,
+          },
+        };
       });
     } else if (destination.droppableId !== source.droppableId) {
       setTodo((prev) => {
-        const sourceBoard = [...prev[source.droppableId]];
-        const destinationBoard = [...prev[destination.droppableId]];
+        const sourceBoard = [...prev[source.droppableId].todos];
+        const destinationBoard = [...prev[destination.droppableId].todos];
         const tmp = sourceBoard.splice(source.index, 1);
         destinationBoard.splice(destination.index, 0, ...tmp);
         return {
           ...prev,
-          [source.droppableId]: sourceBoard,
-          [destination.droppableId]: destinationBoard,
+          [source.droppableId]: {
+            name: prev[source.droppableId].name,
+            todos: sourceBoard,
+          },
+          [destination.droppableId]: {
+            name: prev[destination.droppableId].name,
+            todos: destinationBoard,
+          },
         };
       });
     }
@@ -93,13 +104,16 @@ function App() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
-        <Title>🧑🏻‍💻{"\n"}asdfaf</Title>
-        <Form>
-          <Input />
-        </Form>
+        <Title>🧑🏻‍💻{"\n"}상조의 칸반보드 만들기</Title>
+        <CreateBoardForm />
         <Boards>
           {Object.keys(todo).map((item) => (
-            <DroppableBoard todo={todo[item]} boardId={item} key={item} />
+            <DroppableBoard
+              todo={todo[item].todos}
+              boardId={item}
+              boardName={todo[item].name}
+              key={item}
+            />
           ))}
         </Boards>
         <TrashCan />

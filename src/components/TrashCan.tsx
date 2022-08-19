@@ -1,6 +1,4 @@
-import { useEffect } from "react";
 import { Droppable } from "react-beautiful-dnd";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 const StyledCan = styled.img<{ isDraggingOver: boolean }>`

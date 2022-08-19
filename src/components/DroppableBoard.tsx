@@ -2,7 +2,7 @@ import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import DraggableCard from "./DraggableCard";
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { ITodo, TodoState } from "../atom";
 
 const Wrapper = styled.div`
@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   padding-top: 20px;
   border-radius: 5px;
   min-height: 200px;
-  width: 200px;
+  width: 500px;
   display: flex;
   flex-direction: column;
   box-shadow: 0px 1px 1px 1px #55555545;
@@ -67,28 +67,35 @@ const Input = styled.input`
 interface IBoardProps {
   todo: ITodo[];
   boardId: string;
+  boardName: string;
 }
 
 interface IForm {
   todoText: string;
 }
 
-function DroppableBoard({ todo, boardId }: IBoardProps) {
-  const [todoState, setTodoState] = useRecoilState(TodoState);
-  const { register, watch, handleSubmit, setValue } = useForm<IForm>();
+function DroppableBoard({ todo, boardId, boardName }: IBoardProps) {
+  const setTodoState = useSetRecoilState(TodoState);
+  const { register, handleSubmit, setValue } = useForm<IForm>();
   const onValid = (data: IForm) => {
     const newTodo = {
       id: Date.now(),
       text: data.todoText,
     };
     setTodoState((prev) => {
-      return { ...prev, [boardId]: [...prev[boardId], newTodo] };
+      return {
+        ...prev,
+        [boardId]: {
+          name: prev[boardId].name,
+          todos: [...prev[boardId].todos, newTodo],
+        },
+      };
     });
     setValue("todoText", "");
   };
   return (
     <Wrapper>
-      <Title>{boardId}</Title>
+      <Title>{boardName}</Title>
       <Form onSubmit={handleSubmit(onValid)}>
         <Input {...register("todoText", { required: true })} placeholder="✏️" />
       </Form>
