@@ -4,10 +4,12 @@ import DraggableCard from "./DraggableCard";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import { ITodo, TodoState } from "../atom";
+import BoardDeleteBtn from "./BoardDeleteBtn";
+import React from "react";
 
 const Wrapper = styled.div`
   background-color: ${(props) => props.theme.boardColor};
-  padding-top: 20px;
+  padding-top: 5px;
   border-radius: 5px;
   min-height: 200px;
   max-height: 500px;
@@ -106,6 +108,7 @@ function DroppableBoard({ todo, boardId, boardName, idx }: IBoardProps) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
+          <BoardDeleteBtn key={boardId} boardId={boardId} />
           <Title>{boardName}</Title>
           <Form onSubmit={handleSubmit(onValid)}>
             <Input
@@ -139,4 +142,4 @@ function DroppableBoard({ todo, boardId, boardName, idx }: IBoardProps) {
   );
 }
 
-export default DroppableBoard;
+export default React.memo(DroppableBoard);
