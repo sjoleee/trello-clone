@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { TodoState } from "../atom";
+import { BoardsState, TodoState } from "../atom";
 
 const Form = styled.form`
   display: flex;
@@ -34,12 +34,15 @@ interface IBoardInput {
 
 function CreateBoardForm() {
   const setTodoState = useSetRecoilState(TodoState);
+  const setBoards = useSetRecoilState(BoardsState);
   const { register, handleSubmit, setValue } = useForm<IBoardInput>();
   const onValid = ({ boardInput }: IBoardInput) => {
+    const boardId = Date.now();
     setTodoState((prev) => {
-      const boardId = Date.now();
       return { ...prev, [boardId]: { name: boardInput, todos: [] } };
     });
+    console.log(boardInput);
+    setBoards((prev) => [...prev, String(boardId)]);
     setValue("boardInput", "");
   };
 

@@ -22,3 +22,8 @@ export const TodoState = atom<ITodoState>({
     2: { name: "Done", todos: [] },
   },
 });
+
+export const BoardsState = atom<string[]>({
+  key: "boards",
+  default: ["0", "1", "2"],
+});
