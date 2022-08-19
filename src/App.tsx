@@ -16,8 +16,8 @@ const Title = styled.h1`
 
 const Wrapper = styled.div`
   display: flex;
-  /* max-width: 700px; */
-  /* width: 100%; */
+  padding: 0 50px;
+  width: 100%;
   margin: 0 auto;
   flex-direction: column;
   justify-content: center;
@@ -27,10 +27,12 @@ const Wrapper = styled.div`
 
 const Boards = styled.div`
   display: flex;
-  justify-content: center;
-  /* align-items: flex-start; */
+  justify-content: flex-start;
+  align-items: flex-start;
   width: 100%;
   gap: 10px;
+  overflow-x: scroll;
+  padding-left: 50px;
 `;
 
 function App() {
