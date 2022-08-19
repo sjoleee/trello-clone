@@ -21,7 +21,6 @@ const Title = styled.h1`
 
 const Wrapper = styled.div`
   display: flex;
-  padding: 0 50px;
   width: 100%;
   margin: 0 auto;
   flex-direction: column;
@@ -34,10 +33,10 @@ const Boards = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 100%;
+
   gap: 10px;
+  max-width: 100%;
   overflow-x: scroll;
-  padding-left: 50px;
 `;
 
 function App() {

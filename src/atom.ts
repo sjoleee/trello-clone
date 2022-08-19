@@ -6,7 +6,7 @@ interface IBoard {
 }
 
 export interface ITodo {
-  id: number;
+  id: string;
   text: string;
 }
 

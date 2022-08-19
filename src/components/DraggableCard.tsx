@@ -16,7 +16,7 @@ const Card = styled.div<{ isDragging: boolean }>`
 `;
 
 interface IDraggableCardProps {
-  id: number;
+  id: string;
   text: string;
   idx: number;
 }

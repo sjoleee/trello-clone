@@ -20,7 +20,7 @@ interface IDeleteBtnProps {
 function BoardDeleteBtn({ boardId }: IDeleteBtnProps) {
   const setTodoState = useSetRecoilState(TodoState);
   const [boards, setBoards] = useRecoilState(BoardsState);
-  const handleDelete = (event: React.FormEvent<HTMLButtonElement>) => {
+  const handleBoardDelete = (event: React.FormEvent<HTMLButtonElement>) => {
     const {
       currentTarget: { name },
     } = event;
@@ -40,7 +40,7 @@ function BoardDeleteBtn({ boardId }: IDeleteBtnProps) {
 
   return (
     <ButtonContainer>
-      <Button name={boardId} onClick={handleDelete}>
+      <Button name={boardId} onClick={handleBoardDelete}>
         ❎
       </Button>
     </ButtonContainer>

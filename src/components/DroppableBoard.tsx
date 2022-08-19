@@ -86,7 +86,7 @@ function DroppableBoard({ todo, boardId, boardName, idx }: IBoardProps) {
   const { register, handleSubmit, setValue } = useForm<IForm>();
   const onValid = (data: IForm) => {
     const newTodo = {
-      id: Date.now(),
+      id: String(Date.now()),
       text: data.todoText,
     };
     setTodoState((prev) => {
