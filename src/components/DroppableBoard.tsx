@@ -10,10 +10,12 @@ const Wrapper = styled.div`
   padding-top: 20px;
   border-radius: 5px;
   min-height: 200px;
+  max-height: 500px;
   width: 200px;
   min-width: 200px;
   display: flex;
   flex-direction: column;
+
   box-shadow: 0px 1px 1px 1px #55555545;
   &:last-child {
   }
@@ -38,6 +40,7 @@ const Area = styled.div<IArea>`
   flex-grow: 1;
   transition: background-color 0.1s ease-in-out;
   border-radius: 0 0 5px 5px;
+  overflow-y: scroll;
 `;
 
 const Form = styled.form`
@@ -65,7 +68,7 @@ const Input = styled.input`
   }
 `;
 
-interface IBoardProps {
+export interface IBoardProps {
   todo: ITodo[];
   boardId: string;
   boardName: string;

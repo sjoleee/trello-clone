@@ -4,10 +4,10 @@ import styled from "styled-components";
 const StyledCan = styled.img<{ isDraggingOver: boolean }>`
   position: fixed;
   display: flex;
-  width: 100px;
+  width: 80px;
   height: auto;
 
-  transform: ${(props) => (props.isDraggingOver ? "scale(1.2)" : null)};
+  /* transform: ${(props) => (props.isDraggingOver ? "scale(1.1)" : null)}; */
 `;
 const CanContainer = styled.div`
   position: fixed;
@@ -17,7 +17,6 @@ const CanContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
 `;
 
 function TrashCan() {
