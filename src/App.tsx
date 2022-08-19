@@ -11,6 +11,7 @@ import { BoardsState, TodoState } from "./atom";
 import CreateBoardForm from "./components/CreateBoardForm";
 import DroppableBoard from "./components/DroppableBoard";
 import TrashCan from "./components/TrashCan";
+import Helmet from "react-helmet";
 
 const Title = styled.h1`
   font-size: 50px;
@@ -118,14 +119,18 @@ function App() {
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Wrapper>
-        <Title>🧑🏻‍💻{"\n"}상조의 칸반보드 만들기</Title>
-        <CreateBoardForm />
-        <Droppable droppableId="boards" direction="horizontal" type="board">
-          {(provided) => (
-            <Boards {...provided.droppableProps} ref={provided.innerRef}>
-              {/* {Object.keys(todo).map((item) => (
+    <>
+      <Helmet>
+        <title>상조의 칸반보드 만들기</title>
+      </Helmet>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Wrapper>
+          <Title>🧑🏻‍💻{"\n"}상조의 칸반보드 만들기</Title>
+          <CreateBoardForm />
+          <Droppable droppableId="boards" direction="horizontal" type="board">
+            {(provided) => (
+              <Boards {...provided.droppableProps} ref={provided.innerRef}>
+                {/* {Object.keys(todo).map((item) => (
                 <DroppableBoard
                   todo={todo[item].todos}
                   boardId={item}
@@ -134,22 +139,23 @@ function App() {
                 />
               ))} */}
 
-              {boards.map((item, idx) => (
-                <DroppableBoard
-                  todo={todo[item].todos}
-                  boardId={item}
-                  boardName={todo[item].name}
-                  key={item}
-                  idx={idx}
-                />
-              ))}
-              {provided.placeholder}
-            </Boards>
-          )}
-        </Droppable>
-        <TrashCan />
-      </Wrapper>
-    </DragDropContext>
+                {boards.map((item, idx) => (
+                  <DroppableBoard
+                    todo={todo[item].todos}
+                    boardId={item}
+                    boardName={todo[item].name}
+                    key={item}
+                    idx={idx}
+                  />
+                ))}
+                {provided.placeholder}
+              </Boards>
+            )}
+          </Droppable>
+          <TrashCan />
+        </Wrapper>
+      </DragDropContext>
+    </>
   );
 }
 
