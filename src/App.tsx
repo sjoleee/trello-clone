@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from "react-beautiful-dnd";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { BoardsState, TodoState } from "./atom";
@@ -34,10 +29,12 @@ const Boards = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-
   gap: 10px;
   max-width: 100%;
   overflow-x: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 function App() {

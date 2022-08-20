@@ -43,6 +43,9 @@ const Area = styled.div<IArea>`
   transition: background-color 0.1s ease-in-out;
   border-radius: 0 0 5px 5px;
   overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const Form = styled.form`
